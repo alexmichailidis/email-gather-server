@@ -10,6 +10,7 @@ export const emailsSchema = Type.Object(
     _id: ObjectIdSchema(),
     email: Type.String({ format: 'email'}),
     app: Type.Optional(Type.String()),
+    createdAt: Type.String({ format: 'date-time' }),
   },
   { $id: 'Emails', additionalProperties: false }
 )
@@ -23,7 +24,9 @@ export const emailsDataSchema = Type.Pick(emailsSchema, ['email','app'], {
   $id: 'EmailsData'
 })
 export const emailsDataValidator = getValidator(emailsDataSchema, dataValidator)
-export const emailsDataResolver = resolve({})
+export const emailsDataResolver = resolve({
+  createdAt: () => new Date()
+})
 
 // Schema for updating existing entries
 export const emailsPatchSchema = Type.Partial(emailsSchema, {
